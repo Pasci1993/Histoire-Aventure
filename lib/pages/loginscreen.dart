@@ -1,12 +1,58 @@
-import 'package:appli_histoire_aventure/pages/menuscreen.dart';
-import 'package:appli_histoire_aventure/pages/showforgotpassworddialog.dart';
 import 'package:flutter/material.dart';
-// 🚨 Assurez-vous d'importer le fichier où se trouve InscriptionScreen
-import 'inscriptionscreen.dart'; 
-// 🚨 Assurez-vous d'importer le fichier contenant la fonction showForgotPasswordDialog
+import 'package:firebase_auth/firebase_auth.dart';
 
-class LoginScreen extends StatelessWidget {
+import 'inscriptionscreen.dart';
+import 'menuscreen.dart';
+
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController pseudoController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  String _errorMessage = '';
+  bool loading = false;
+
+  @override
+  void dispose() {
+    pseudoController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _handleLogin(BuildContext context) async {
+    setState(() => _errorMessage = '');
+    final pseudo = pseudoController.text.trim();
+    final password = passwordController.text.trim();
+
+    if (pseudo.isEmpty || password.isEmpty) {
+      setState(() => _errorMessage = "Veuillez remplir tous les champs.");
+      return;
+    }
+
+    setState(() => loading = true);
+
+    try {
+      final email = "$pseudo@histoire-aventure.com"; // email fictif
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+
+      if (context.mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const MenuScreen()),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      String message = e.message ?? "Erreur inconnue";
+      setState(() => _errorMessage = message);
+    } finally {
+      setState(() => loading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +74,10 @@ class LoginScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
+              children: [
                 SizedBox(height: screenHeight * 0.05),
-
                 const Text(
-                  'Déjà inscrit : saisis tes identifiants',
+                  'Déjà inscrit ? Saisis tes identifiants',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 28,
@@ -40,40 +85,31 @@ class LoginScreen extends StatelessWidget {
                     color: Colors.white,
                   ),
                 ),
-
                 SizedBox(height: screenHeight * 0.06),
-                
-                // --- Champ Pseudo ---
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text('Pseudo', style: TextStyle(fontSize: 18, color: Colors.white)),
-                ),
-                _buildWhiteTextField(),
 
+                _buildTextField('Pseudo', Icons.person, pseudoController),
                 SizedBox(height: screenHeight * 0.04),
-
-                // --- Champ Mot de passe ---
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text('Mot de passe', style: TextStyle(fontSize: 18, color: Colors.white)),
-                ),
-                _buildWhiteTextField(isPassword: true),
-                
+                _buildTextField('Mot de passe', Icons.lock, passwordController,
+                    isPassword: true),
                 const SizedBox(height: 10),
 
-                // --- Lien Mot de passe oublié (Cliquable) ---
-                _buildForgotPasswordLink(context), // Appel à la nouvelle fonction
+                if (_errorMessage.isNotEmpty)
+                  Text(
+                    _errorMessage,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        color: Colors.redAccent,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  ),
 
-                SizedBox(height: screenHeight * 0.06),
-
-                // --- Bouton OK ---
-                _buildOkButton(context, screenWidth),
+                const SizedBox(height: 20),
+                loading
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : _buildOkButton(screenWidth),
 
                 SizedBox(height: screenHeight * 0.25),
-
-                // --- Bouton "Pas encore inscrit?" ---
-                _buildSignUpButton(context, screenWidth), 
-                
+                _buildSignUpButton(screenWidth),
                 SizedBox(height: screenHeight * 0.05),
               ],
             ),
@@ -83,31 +119,9 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  // --- NOUVEAU : Fonction pour le lien Mot de passe oublié (appelle la modale) ---
-  Widget _buildForgotPasswordLink(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: GestureDetector(
-        onTap: () {
-          // 🚨 Appel à la fonction showForgotPasswordDialog pour afficher la modale
-          showForgotPasswordDialog(context); 
-        },
-        child: const Text(
-          'Mot de passe oublié',
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.white,
-            decoration: TextDecoration.underline,
-            decorationColor: Colors.white,
-          ),
-        ),
-      ),
-    );
-  }
-
-  // --- Fonctions de construction réutilisables ---
-
-  Widget _buildWhiteTextField({bool isPassword = false}) {
+  Widget _buildTextField(
+      String label, IconData icon, TextEditingController controller,
+      {bool isPassword = false}) {
     return Container(
       margin: const EdgeInsets.only(top: 8.0),
       height: 50,
@@ -116,53 +130,47 @@ class LoginScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(25.0),
       ),
       child: TextField(
+        controller: controller,
         obscureText: isPassword,
-        decoration: const InputDecoration(
+        style: const TextStyle(color: Colors.black, fontSize: 18),
+        decoration: InputDecoration(
           border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 20.0, vertical: 14.0),
+          labelText: label,
+          labelStyle: const TextStyle(color: Colors.deepPurple),
+          prefixIcon: Icon(icon, color: Colors.deepPurple),
         ),
-        style: const TextStyle(color: Colors.black),
       ),
     );
   }
 
-  Widget _buildOkButton(BuildContext context, double screenWidth) {
+  Widget _buildOkButton(double screenWidth) {
     return ElevatedButton(
-      onPressed: () {Navigator.push( context, MaterialPageRoute(
-builder: (context) => const MenuScreen(), 
- ), 
-);
-        debugPrint('Bouton OK pressé (Login)');
-      },
+      onPressed: () => _handleLogin(context),
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,
-        foregroundColor: Colors.deepPurple, 
+        foregroundColor: Colors.deepPurple,
         elevation: 5,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-        minimumSize: const Size(100, 60),
+        minimumSize: Size(screenWidth, 56),
       ),
       child: const Text(
         'OK',
         style: TextStyle(
-          fontSize: 30,
-          fontWeight: FontWeight.bold,
-          color: Colors.deepPurple,
-        ),
+            fontSize: 20, fontWeight: FontWeight.bold, color: Colors.deepPurple),
       ),
     );
   }
 
-  Widget _buildSignUpButton(BuildContext context, double screenWidth) {
+  Widget _buildSignUpButton(double screenWidth) {
     return ElevatedButton(
       onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const InscriptionScreen(), 
-          ),
+        // Navigue vers InscriptionScreen sans âge pour les utilisateurs "Pas encore inscrit"
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const InscriptionScreen()),
         );
       },
       style: ElevatedButton.styleFrom(
@@ -172,15 +180,12 @@ builder: (context) => const MenuScreen(),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25.0),
         ),
-        minimumSize: Size(screenWidth * 0.7, 50),
+        minimumSize: Size(screenWidth, 50),
       ),
       child: const Text(
-        'Pas encore inscrit?',
+        'Pas encore inscrit ?',
         style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: Colors.blue,
-        ),
+            fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blue),
       ),
     );
   }

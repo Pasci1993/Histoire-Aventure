@@ -84,14 +84,17 @@ class AgeSelectionScreen extends StatelessWidget {
         // GestureDetector simule un bouton cliquable
         child: ElevatedButton(
           onPressed: () {
-            Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const InscriptionScreen(),
-                        ),
-                      );
-            debugPrint('Sélectionné : $word');
-          },
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => InscriptionScreen(
+        ageNumber: number,
+        ageWord: word,
+      ),
+    ),
+  );
+},
+
           // Style pour retirer le fond et l'ombre par défaut d'ElevatedButton
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.white,
