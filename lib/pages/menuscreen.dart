@@ -7,51 +7,55 @@ class MenuScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // Utiliser MediaQuery pour obtenir la taille de l'écran (utile pour le padding)
     final screenWidth = MediaQuery.of(context).size.width;
+    // Calculer la hauteur disponible sous l'AppBar pour remplir la page
+    final availableHeight =
+        MediaQuery.of(context).size.height -
+        kToolbarHeight -
+        MediaQuery.of(context).padding.top -
+        32; // 32 = padding vertical (16 + 16)
 
     return Scaffold(
-      backgroundColor: Colors.grey[100], // Fond gris très clair pour l'arrière-plan
+      backgroundColor:
+          Colors.grey[100], // Fond gris très clair pour l'arrière-plan
       appBar: AppBar(
-        title: const Text('Menu', style: TextStyle(color: Colors.black, fontSize: 28)),
+        title: const Text(
+          'Menu',
+          style: TextStyle(color: Colors.black, fontSize: 28),
+        ),
         backgroundColor: Colors.grey[100],
         elevation: 0,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Container(
+          // Remplir toute la hauteur disponible pour que le menu occupe la page
+          height: availableHeight,
+          width: double.infinity,
+          padding: const EdgeInsets.all(20.0),
+          decoration: BoxDecoration(
+            color: Colors.deepPurple, // Fond violet
+            borderRadius: BorderRadius.circular(20.0),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              // --- Conteneur Principal Violet ---
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(20.0),
-                decoration: BoxDecoration(
-                  color: Colors.deepPurple, // Fond violet
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    // --- Header (Avatar et Bouton Débloquer) ---
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        // Avatar
-                        _buildUserAvatar(),
+              // --- Header (Avatar et Bouton Débloquer) ---
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  // Avatar
+                  _buildUserAvatar(),
 
-                        // Bouton "Tout débloquer"
-                        _buildUnlockButton(),
-                      ],
-                    ),
-
-                    const SizedBox(height: 30),
-
-                    // --- Liste des Cartes de Menu (Scrollable horizontalement) ---
-                    _buildMenuCards(context, screenWidth),
-                  ],
-                ),
+                  // Bouton "Tout débloquer"
+                  _buildUnlockButton(),
+                ],
               ),
+
+              const SizedBox(height: 30),
+
+              // --- Liste des Cartes de Menu (Scrollable horizontalement) ---
+              _buildMenuCards(context, screenWidth),
             ],
           ),
         ),
@@ -69,13 +73,12 @@ class MenuScreen extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         // Bordure stylisée (Orange, Bleu, etc.)
-        border: Border.all(
-          color: Colors.orange, 
-          width: 3.0,
-        ),
+        border: Border.all(color: Colors.orange, width: 3.0),
         image: const DecorationImage(
           // Remplacez 'assets/avatar.png' par l'image de votre choix
-          image: NetworkImage('https://via.placeholder.com/60/FFD700/000000?text=👶'), 
+          image: NetworkImage(
+            'https://via.placeholder.com/60/FFD700/000000?text=👶',
+          ),
           fit: BoxFit.cover,
         ),
       ),
@@ -137,14 +140,13 @@ class MenuScreen extends StatelessWidget {
       },
     ];
 
-    // Calculer la largeur de chaque carte (environ 1/3 de l'écran - padding)
-    final cardWidth = screenWidth * 0.4;
-    final cardHeight = 150.0;
+    // Hauteur de chaque carte
+    final cardHeight = 100.0;
 
-    return SizedBox(
-      height: cardHeight + 50, // Hauteur suffisante pour les cartes et le texte
+    // Maintenant on retourne une liste verticale qui prend l'espace restant
+    return Expanded(
       child: ListView.builder(
-        scrollDirection: Axis.horizontal, // Défilement horizontal
+        padding: EdgeInsets.zero,
         itemCount: menuItems.length,
         itemBuilder: (context, index) {
           final item = menuItems[index];
@@ -152,43 +154,43 @@ class MenuScreen extends StatelessWidget {
           return GestureDetector(
             onTap: item['action'],
             child: Container(
-              width: cardWidth,
-              margin: const EdgeInsets.only(right: 15.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              width: double.infinity,
+              margin: const EdgeInsets.only(bottom: 15.0),
+              padding: const EdgeInsets.all(12.0),
+              height: cardHeight,
+              decoration: BoxDecoration(
+                color: index == 0
+                    ? Colors.white
+                    : Colors.white.withOpacity(0.95),
+                borderRadius: BorderRadius.circular(15.0),
+                border: index != 0
+                    ? Border.all(color: Colors.grey.shade300)
+                    : null,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // --- La Carte (Container blanc) ---
+                  // Icône à gauche
                   Container(
-                    height: cardHeight,
-                    padding: const EdgeInsets.all(12.0),
+                    width: 64,
+                    height: 64,
                     decoration: BoxDecoration(
-                      color: index == 0 ? Colors.white : Colors.white.withOpacity(0.95), // La première est pleine
-                      borderRadius: BorderRadius.circular(15.0),
-                      border: index != 0 ? Border.all(color: Colors.grey.shade300) : null, // Bordure subtile pour les autres
+                      color: Colors.transparent,
+                      shape: BoxShape.circle,
                     ),
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // 🎨 Icône ajoutée
-                          Icon(item['icon'], size: 50, color: item['color']),
-                          const SizedBox(height: 10),
-                        ],
-                      ),
-                    ),
+                    child: Icon(item['icon'], size: 36, color: item['color']),
                   ),
-
-                  const SizedBox(height: 5),
-
-                  // --- Texte sous la Carte ---
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
+                  const SizedBox(width: 12),
+                  // Texte et description
+                  Expanded(
                     child: Text(
                       item['title'],
                       style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: index == 0 ? FontWeight.bold : FontWeight.normal,
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: index == 0
+                            ? FontWeight.bold
+                            : FontWeight.normal,
                       ),
                     ),
                   ),
