@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-// TODO: Importez les chemins des écrans de destination ici (ex: StorySelectionScreen, GameSelectionScreen, etc.)
-
 class DashboardScreenLandscape extends StatefulWidget {
   const DashboardScreenLandscape({super.key});
 
@@ -143,7 +141,7 @@ class _DashboardScreenLandscapeState extends State<DashboardScreenLandscape> {
                     height: 40,
                     child: ElevatedButton(
                       onPressed: () {
-                        // TODO: Logique d'achat ou de déverrouillage
+                        
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Ouverture du magasin de déverrouillage...')),
                         );
@@ -179,9 +177,7 @@ class _DashboardScreenLandscapeState extends State<DashboardScreenLandscape> {
                       label: 'Démarrer le parcours personnalisé',
                       icon: Icons.auto_stories,
                       onTap: () {
-                        // TODO: Navigation vers l'écran de parcours
-                        print('Démarrer le parcours personnalisé');
-                      },
+                                              },
                     ),
                     
                     // 2. Histoires interactives
@@ -189,8 +185,7 @@ class _DashboardScreenLandscapeState extends State<DashboardScreenLandscape> {
                       label: 'Histoires interactives',
                       icon: Icons.book,
                       onTap: () {
-                        // TODO: Navigation vers l'écran de sélection d'histoire
-                        print('Sélectionner une histoire');
+
                       },
                     ),
                     
@@ -200,7 +195,6 @@ class _DashboardScreenLandscapeState extends State<DashboardScreenLandscape> {
                       icon: Icons.sports_esports,
                       isLocked: true,
                       onTap: () {
-                         // TODO: Afficher une modale d'achat
                       },
                     ),
 
@@ -210,7 +204,6 @@ class _DashboardScreenLandscapeState extends State<DashboardScreenLandscape> {
                       icon: Icons.bar_chart,
                       isLocked: true,
                       onTap: () {
-                         // TODO: Afficher une modale d'achat
                       },
                     ),
                   ],

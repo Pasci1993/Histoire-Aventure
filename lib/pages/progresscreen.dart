@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class ProgressionScreenLandscape extends StatefulWidget {
-  const ProgressionScreenLandscape({super.key});
+class ProgresScreenLandscape extends StatefulWidget {
+  const ProgresScreenLandscape({super.key});
 
   @override
-  State<ProgressionScreenLandscape> createState() => _ProgressionScreenLandscapeState();
+  State<ProgresScreenLandscape> createState() => _ProgresScreenLandscapeState();
 }
 
-class _ProgressionScreenLandscapeState extends State<ProgressionScreenLandscape> {
+class _ProgresScreenLandscapeState extends State<ProgresScreenLandscape> {
   // Définition de la couleur Aqua/Sarcelle de la maquette
   static const Color aquaColor = Color(0xFF6DE8E4); 
   static const Color darkAccentColor = Color(0xFF004D40); // Vert foncé pour le texte

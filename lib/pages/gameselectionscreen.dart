@@ -1,9 +1,6 @@
-import 'package:appli_histoire_aventure/pages/colorsortinggame';
+import 'package:appli_histoire_aventure/pages/colorsortinggame.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-// TODO: Importez les chemins des jeux que vous souhaitez lancer
-// Exemple pour le jeu de tri des couleurs
 
 class GameSelectionScreenLandscape extends StatefulWidget {
   const GameSelectionScreenLandscape({super.key});
@@ -196,8 +193,6 @@ class _GameSelectionScreenLandscapeState extends State<GameSelectionScreenLandsc
                       label: 'Jeu des Formes',
                       iconOrImage: const Icon(Icons.category, size: 50, color: Color(0xFF6A1B9A)),
                       onTap: () {
-                        print('Lancer le Jeu des Formes');
-                        // TODO: Navigation vers ShapeSortingGame(), par exemple
                       },
                     ),
                     

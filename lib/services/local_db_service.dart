@@ -1,6 +1,8 @@
+import 'package:appli_histoire_aventure/modeles/child_profile.dart';
 import 'package:sqflite/sqflite.dart';
+// ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
-import 'package:appli_histoire_aventure/models/child_profile.dart'; // Assurez-vous d'avoir le bon chemin
+// Assurez-vous d'avoir le bon chemin
 
 class LocalDbService {
   static Database? _database;

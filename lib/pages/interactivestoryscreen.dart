@@ -59,6 +59,7 @@ class _InteractiveStoryScreenLandscapeState extends State<InteractiveStoryScreen
     // Pour cet exemple, on navigue après un court délai pour que l'enfant puisse lire le résultat
     Future.delayed(const Duration(seconds: 4), () {
         // Normalement, vous naviguez ici vers la page suivante de l'histoire ou le tableau de bord
+        // ignore: use_build_context_synchronously
         Navigator.pop(context);
     });
   }
@@ -126,7 +127,6 @@ class _InteractiveStoryScreenLandscapeState extends State<InteractiveStoryScreen
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.1), // Placeholder visuel
                         borderRadius: BorderRadius.circular(15),
-                        // TODO: Ajouter l'image d'illustration de la scène
                       ),
                       child: const Center(
                         child: Text("Image de la Scène", style: TextStyle(color: Colors.white70)),

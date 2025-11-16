@@ -158,7 +158,6 @@ class _ProgressionScreenLandscapeState extends State<ProgressionScreenLandscape>
                       icon: Icons.track_changes,
                       color: const Color(0xFF1A237E), // Bleu marine
                       onTap: () {
-                        print('Afficher les détails du Progrès');
                       },
                     ),
                     
@@ -168,7 +167,6 @@ class _ProgressionScreenLandscapeState extends State<ProgressionScreenLandscape>
                       icon: Icons.star_rate_rounded,
                       color: Colors.orange.shade800, // Orange vif
                       onTap: () {
-                        print('Afficher le total des Étoiles');
                       },
                     ),
                     
@@ -178,7 +176,6 @@ class _ProgressionScreenLandscapeState extends State<ProgressionScreenLandscape>
                       icon: Icons.emoji_events,
                       color: const Color(0xFF6A1B9A), // Couleur violette classique
                       onTap: () {
-                        print('Afficher les Trophées gagnés');
                       },
                     ),
                   ],

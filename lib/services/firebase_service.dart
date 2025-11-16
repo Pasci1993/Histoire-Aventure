@@ -1,5 +1,6 @@
+import 'package:appli_histoire_aventure/modeles/child_profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:appli_histoire_aventure/models/child_profile.dart'; // Assurez-vous d'avoir le bon chemin
+// Assurez-vous d'avoir le bon chemin
 
 class FirebaseService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -24,7 +25,6 @@ class FirebaseService {
       }
       return null;
     } catch (e) {
-      print("Erreur lors de la récupération du profil Firebase : $e");
       return null;
     }
   }

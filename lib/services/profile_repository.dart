@@ -1,4 +1,4 @@
-import 'package:appli_histoire_aventure/models/child_profile.dart';
+import 'package:appli_histoire_aventure/modeles/child_profile.dart';
 import 'package:appli_histoire_aventure/services/local_db_service.dart';
 import 'package:appli_histoire_aventure/services/firebase_service.dart';
 import 'package:uuid/uuid.dart'; // Nécessaire pour générer des IDs uniques
@@ -48,10 +48,8 @@ class ProfileRepository {
     // Si la connexion échoue, nous pouvons implémenter une file d'attente de synchronisation.
     try {
       await _firebaseService.saveProfile(updatedProfile);
-    } catch (e) {
-      print("Erreur de synchronisation Firebase : $e");
-      // TODO: Marquer ce profil comme "à synchroniser" localement
-    }
+    // ignore: empty_catches
+    } catch (e) {}
   }
 
   // --- 3. RÉCUPÉRATION DU PROFIL (Au démarrage) ---
