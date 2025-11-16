@@ -45,9 +45,7 @@ class _ColorSortingGameState extends State<ColorSortingGame> {
 
   @override
   void dispose() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
+    // Ne pas réinitialiser l'orientation pour rester en paysage après la fin du jeu
     super.dispose();
   }
 
