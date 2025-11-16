@@ -57,7 +57,9 @@ class _ColorSortingGameState extends State<ColorSortingGame> {
       final random = Random();
       // Génère 5 objets de couleurs aléatoires
       for (int i = 0; i < _totalItems; i++) {
-        _itemsToDrag.add(GameColor.values[random.nextInt(GameColor.values.length)]);
+        _itemsToDrag.add(
+          GameColor.values[random.nextInt(GameColor.values.length)],
+        );
       }
       // Réinitialise l'état des zones de dépôt
       _acceptedColors.updateAll((key, value) => false);
@@ -112,7 +114,8 @@ class _ColorSortingGameState extends State<ColorSortingGame> {
   Widget build(BuildContext context) {
     return Scaffold(
       // Nouveau fond d'écran pour le jeu
-      backgroundColor: Colors.lightBlue[100], // Un fond bleu clair pour un jeu d'enfant
+      backgroundColor:
+          Colors.lightBlue[100], // Un fond bleu clair pour un jeu d'enfant
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(15.0),
@@ -124,15 +127,23 @@ class _ColorSortingGameState extends State<ColorSortingGame> {
                 children: [
                   GestureDetector(
                     onTap: () => Navigator.pop(context),
-                    child: const Icon(Icons.arrow_back, color: Colors.indigo, size: 40),
+                    child: const Icon(
+                      Icons.arrow_back,
+                      color: Colors.indigo,
+                      size: 40,
+                    ),
                   ),
                   Text(
                     'Score : $_score / $_totalItems',
-                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.indigo),
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.indigo,
+                    ),
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 20),
 
               // --- Zone des éléments à glisser ---
@@ -154,18 +165,29 @@ class _ColorSortingGameState extends State<ColorSortingGame> {
                         color: Colors.transparent,
                         child: CircleAvatar(
                           radius: 30,
-                          backgroundColor: _getMaterialColor(color).withOpacity(0.7),
-                          child: Icon(Icons.palette, color: Colors.white.withOpacity(0.8), size: 30),
+                          backgroundColor: _getMaterialColor(
+                            color,
+                          ).withOpacity(0.7),
+                          child: Icon(
+                            Icons.palette,
+                            color: Colors.white.withOpacity(0.8),
+                            size: 30,
+                          ),
                         ),
                       ),
-                      childWhenDragging: Container(), // Cache l'original pendant le glissement
-                      child: _acceptedColors[_itemsToDrag[index]]! 
-                        ? Container() // Objet disparu si déjà accepté
-                        : CircleAvatar(
-                            radius: 30,
-                            backgroundColor: _getMaterialColor(color),
-                            child: const Icon(Icons.circle, color: Colors.white, size: 15), // Petite icône pour la démo
-                          ),
+                      childWhenDragging:
+                          Container(), // Cache l'original pendant le glissement
+                      child: _acceptedColors[_itemsToDrag[index]]!
+                          ? Container() // Objet disparu si déjà accepté
+                          : CircleAvatar(
+                              radius: 30,
+                              backgroundColor: _getMaterialColor(color),
+                              child: const Icon(
+                                Icons.circle,
+                                color: Colors.white,
+                                size: 15,
+                              ), // Petite icône pour la démo
+                            ),
                     );
                   }).toList(),
                 ),
@@ -179,7 +201,8 @@ class _ColorSortingGameState extends State<ColorSortingGame> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: GameColor.values.map((targetColor) {
                     return DragTarget<GameColor>(
-                      onWillAcceptWithDetails: (details) => details.data == targetColor,
+                      onWillAcceptWithDetails: (details) =>
+                          details.data == targetColor,
                       onAcceptWithDetails: (details) {
                         setState(() {
                           _score++;
@@ -196,10 +219,16 @@ class _ColorSortingGameState extends State<ColorSortingGame> {
                           width: 120,
                           height: 120,
                           decoration: BoxDecoration(
-                            color: _getMaterialColor(targetColor).withOpacity(0.2), // Fond transparent de la cible
+                            color: _getMaterialColor(
+                              targetColor,
+                            ).withOpacity(0.2), // Fond transparent de la cible
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                              color: candidateData.isNotEmpty ? _getMaterialColor(targetColor) : Colors.grey.shade400, // Bordure plus épaisse si un objet est au-dessus
+                              color: candidateData.isNotEmpty
+                                  ? _getMaterialColor(targetColor)
+                                  : Colors
+                                        .grey
+                                        .shade400, // Bordure plus épaisse si un objet est au-dessus
                               width: candidateData.isNotEmpty ? 4 : 2,
                             ),
                           ),
