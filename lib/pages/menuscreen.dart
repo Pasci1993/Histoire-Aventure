@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:appli_histoire_aventure/pages/ageselectionscreen.dart';
+import 'package:appli_histoire_aventure/pages/storyselectionscreen.dart';
+import 'package:appli_histoire_aventure/pages/gameselectionscreen.dart';
+import 'package:appli_histoire_aventure/pages/progresscreen.dart';
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({super.key});
@@ -118,25 +122,41 @@ class MenuScreen extends StatelessWidget {
         'title': 'Démarre le parcours personnalisé',
         'icon': Icons.star,
         'color': Colors.white,
-        'action': () => debugPrint('Parcours personnalisé démarré'),
+        'action': () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AgeSelectionScreen()),
+        ),
       },
       {
         'title': 'Histoires interactives',
         'icon': Icons.book_rounded,
         'color': Colors.lightBlue,
-        'action': () => debugPrint('Histoires interactives sélectionnées'),
+        'action': () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const StorySelectionScreen()),
+        ),
       },
       {
         'title': 'Jeux éducatifs',
         'icon': Icons.gamepad_rounded,
         'color': Colors.greenAccent,
-        'action': () => debugPrint('Jeux éducatifs sélectionnés'),
+        'action': () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const GameSelectionScreenLandscape(),
+          ),
+        ),
       },
       {
         'title': 'Progression',
         'icon': Icons.bar_chart_rounded,
         'color': Colors.orangeAccent,
-        'action': () => debugPrint('Progression consultée'),
+        'action': () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ProgresScreenLandscape(),
+          ),
+        ),
       },
     ];
 
@@ -151,50 +171,56 @@ class MenuScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           final item = menuItems[index];
 
-          return GestureDetector(
-            onTap: item['action'],
-            child: Container(
-              width: double.infinity,
-              margin: const EdgeInsets.only(bottom: 15.0),
-              padding: const EdgeInsets.all(12.0),
-              height: cardHeight,
-              decoration: BoxDecoration(
-                color: index == 0
-                    ? Colors.white
-                    : Colors.white.withOpacity(0.95),
-                borderRadius: BorderRadius.circular(15.0),
-                border: index != 0
-                    ? Border.all(color: Colors.grey.shade300)
-                    : null,
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Icône à gauche
-                  Container(
-                    width: 64,
-                    height: 64,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      shape: BoxShape.circle,
+          final VoidCallback? action = item['action'] as VoidCallback?;
+
+          return Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: action,
+              borderRadius: BorderRadius.circular(15.0),
+              child: Container(
+                width: double.infinity,
+                margin: const EdgeInsets.only(bottom: 15.0),
+                padding: const EdgeInsets.all(12.0),
+                height: cardHeight,
+                decoration: BoxDecoration(
+                  color: index == 0
+                      ? Colors.white
+                      : Colors.white.withOpacity(0.95),
+                  borderRadius: BorderRadius.circular(15.0),
+                  border: index != 0
+                      ? Border.all(color: Colors.grey.shade300)
+                      : null,
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Icône à gauche
+                    Container(
+                      width: 64,
+                      height: 64,
+                      decoration: const BoxDecoration(
+                        color: Colors.transparent,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(item['icon'], size: 36, color: item['color']),
                     ),
-                    child: Icon(item['icon'], size: 36, color: item['color']),
-                  ),
-                  const SizedBox(width: 12),
-                  // Texte et description
-                  Expanded(
-                    child: Text(
-                      item['title'],
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: index == 0
-                            ? FontWeight.bold
-                            : FontWeight.normal,
+                    const SizedBox(width: 12),
+                    // Texte et description
+                    Expanded(
+                      child: Text(
+                        item['title'],
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: index == 0
+                              ? FontWeight.bold
+                              : FontWeight.normal,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );

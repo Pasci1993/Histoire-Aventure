@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:appli_histoire_aventure/pages/interactivestoryscreen.dart';
 
-class DashboardScreenLandscape extends StatefulWidget {
-  const DashboardScreenLandscape({super.key});
+class StorySelectionScreen extends StatefulWidget {
+  const StorySelectionScreen({super.key});
 
   @override
-  State<DashboardScreenLandscape> createState() => _DashboardScreenLandscapeState();
+  State<StorySelectionScreen> createState() => _StorySelectionScreenState();
 }
 
-class _DashboardScreenLandscapeState extends State<DashboardScreenLandscape> {
+class   _StorySelectionScreenState extends State<StorySelectionScreen> {
   @override
   void initState() {
     super.initState();
@@ -22,12 +23,10 @@ class _DashboardScreenLandscapeState extends State<DashboardScreenLandscape> {
   @override
   void dispose() {
     // Réinitialise l'orientation par défaut (Portrait) lorsque l'écran est quitté
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     super.dispose();
   }
-  
+
   // Widget utilitaire pour les cartes interactives (Histoires, Jeux, Progression)
   Widget _buildContentCard({
     required String label,
@@ -57,12 +56,16 @@ class _DashboardScreenLandscapeState extends State<DashboardScreenLandscape> {
             children: [
               // Icône de verrouillage ou Contenu
               if (isLocked)
-                const Icon(Icons.lock_outline, size: 50, color: Color(0xFF6A1B9A))
+                const Icon(
+                  Icons.lock_outline,
+                  size: 50,
+                  color: Color(0xFF6A1B9A),
+                )
               else
                 Icon(icon, size: 50, color: const Color(0xFF6A1B9A)),
-              
+
               const SizedBox(height: 10),
-              
+
               // Texte descriptif
               Text(
                 label,
@@ -87,8 +90,12 @@ class _DashboardScreenLandscapeState extends State<DashboardScreenLandscape> {
       backgroundColor: Colors.grey[200],
       body: Center(
         child: Container(
-          width: MediaQuery.of(context).size.width * 0.95, // Presque toute la largeur
-          height: MediaQuery.of(context).size.height * 0.85, // Presque toute la hauteur
+          width:
+              MediaQuery.of(context).size.width *
+              0.95, // Presque toute la largeur
+          height:
+              MediaQuery.of(context).size.height *
+              0.85, // Presque toute la hauteur
           padding: const EdgeInsets.all(20.0),
           decoration: BoxDecoration(
             color: const Color(0xFF6A1B9A), // Fond violet
@@ -110,16 +117,18 @@ class _DashboardScreenLandscapeState extends State<DashboardScreenLandscape> {
                       border: Border.all(color: Colors.white, width: 2),
                       // Remplacer par l'image de profil réelle
                       image: const DecorationImage(
-                          image: AssetImage('assets/images/placeholder_profile.png'), 
-                          fit: BoxFit.cover
+                        image: AssetImage(
+                          'assets/images/placeholder_profile.png',
+                        ),
+                        fit: BoxFit.cover,
                       ),
                     ),
                     // Si vous voulez l'icône de la maquette:
-                    // child: Image.asset('assets/images/avatar.png', width: 60), 
+                    // child: Image.asset('assets/images/avatar.png', width: 60),
                   ),
-                  
+
                   const SizedBox(width: 20),
-                  
+
                   // 2. Titre (Sélection de l'histoire/Menu Principal)
                   const Padding(
                     padding: EdgeInsets.only(top: 15.0),
@@ -134,16 +143,18 @@ class _DashboardScreenLandscapeState extends State<DashboardScreenLandscape> {
                   ),
 
                   const Spacer(), // Pousse les éléments restants à droite
-
                   // 3. Bouton "Tout débloquer"
                   SizedBox(
                     width: 150,
                     height: 40,
                     child: ElevatedButton(
                       onPressed: () {
-                        
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Ouverture du magasin de déverrouillage...')),
+                          const SnackBar(
+                            content: Text(
+                              'Ouverture du magasin de déverrouillage...',
+                            ),
+                          ),
                         );
                       },
                       style: ElevatedButton.styleFrom(
@@ -165,46 +176,49 @@ class _DashboardScreenLandscapeState extends State<DashboardScreenLandscape> {
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 20),
-              
+
               // --- Ligne des Cartes de Contenu ---
               Expanded(
                 child: Row(
                   children: <Widget>[
                     // 1. Démarrer le parcours personnalisé
                     _buildContentCard(
-                      label: 'Démarrer le parcours personnalisé',
+                      label: 'Démarrer l\'histoire',
                       icon: Icons.auto_stories,
-                      onTap: () {
-                                              },
+                      onTap: () {},
                     ),
-                    
+
                     // 2. Histoires interactives
                     _buildContentCard(
-                      label: 'Histoires interactives',
+                      label: 'Histoire 1',
                       icon: Icons.book,
                       onTap: () {
-
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const InteractiveStoryScreenLandscape(
+                                  storyId: 'story1',
+                                ),
+                          ),
+                        );
                       },
                     ),
-                    
-                    // 3. Jeux éducatifs (Verrouillé, comme dans la maquette)
                     _buildContentCard(
-                      label: 'Jeux éducatifs',
-                      icon: Icons.sports_esports,
+                      label: 'Histoire 2',
+                      icon: Icons.book,
                       isLocked: true,
-                      onTap: () {
-                      },
+                      onTap: () {},
                     ),
 
                     // 4. Progression (Verrouillé, comme dans la maquette)
                     _buildContentCard(
-                      label: 'Progression',
-                      icon: Icons.bar_chart,
+                      label: 'Histoire 3',
+                      icon: Icons.book,
                       isLocked: true,
-                      onTap: () {
-                      },
+                      onTap: () {},
                     ),
                   ],
                 ),

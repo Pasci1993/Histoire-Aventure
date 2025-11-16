@@ -8,12 +8,15 @@ class InteractiveStoryScreenLandscape extends StatefulWidget {
   const InteractiveStoryScreenLandscape({super.key, required this.storyId});
 
   @override
-  State<InteractiveStoryScreenLandscape> createState() => _InteractiveStoryScreenLandscapeState();
+  State<InteractiveStoryScreenLandscape> createState() =>
+      _InteractiveStoryScreenLandscapeState();
 }
 
-class _InteractiveStoryScreenLandscapeState extends State<InteractiveStoryScreenLandscape> {
+class _InteractiveStoryScreenLandscapeState
+    extends State<InteractiveStoryScreenLandscape> {
   // Simuler l'état actuel de l'histoire (peut être stocké dans un modèle ou un fichier JSON)
-  String _currentText = "Le petit dragon bleu, Zippy, arrive au bord d'une rivière large. Pour atteindre l'autre côté où se trouve le trésor, il a deux options : traverser le pont de corde fragile ou chercher un chemin plus long à travers la forêt dense. Que fait Zippy ?";
+  String _currentText =
+      "Le petit dragon bleu, Zippy, arrive au bord d'une rivière large. Pour atteindre l'autre côté où se trouve le trésor, il a deux options : traverser le pont de corde fragile ou chercher un chemin plus long à travers la forêt dense. Que fait Zippy ?";
   String _choiceA = "Traverser le pont fragile (Rapide mais dangereux)";
   String _choiceB = "Prendre le chemin de la forêt (Sûr mais lent)";
 
@@ -29,23 +32,22 @@ class _InteractiveStoryScreenLandscapeState extends State<InteractiveStoryScreen
 
   @override
   void dispose() {
-    // Réinitialise l'orientation par défaut
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
+    // Ne pas réinitialiser l'orientation pour rester en paysage après la fin du jeu
     super.dispose();
   }
 
   // Logique pour gérer le choix de l'utilisateur
   void _handleChoice(String choice) {
     String newText;
-    
+
     // Simule la progression de l'histoire
     if (choice == 'A') {
-      newText = "Zippy traverse le pont ! Le pont tangue terriblement, mais il y arrive ! Ouf ! Il est sauf et a gagné du temps. Il continue son chemin vers le trésor. (Gagné : Temps) ";
+      newText =
+          "Zippy traverse le pont ! Le pont tangue terriblement, mais il y arrive ! Ouf ! Il est sauf et a gagné du temps. Il continue son chemin vers le trésor. (Gagné : Temps) ";
       // Ici, on pourrait naviguer vers la suite de l'histoire (un autre écran)
     } else {
-      newText = "Zippy prend le chemin de la forêt. Il rencontre un gentil écureuil qui lui donne des noisettes, mais il a perdu beaucoup de temps. Le trésor sera-t-il encore là ? (Perdu : Temps)";
+      newText =
+          "Zippy prend le chemin de la forêt. Il rencontre un gentil écureuil qui lui donne des noisettes, mais il a perdu beaucoup de temps. Le trésor sera-t-il encore là ? (Perdu : Temps)";
       // Ici, on pourrait naviguer vers la suite de l'histoire (un autre écran)
     }
 
@@ -53,14 +55,14 @@ class _InteractiveStoryScreenLandscapeState extends State<InteractiveStoryScreen
       _currentText = newText;
       // Optionnel : Désactiver les choix après la première décision
       _choiceA = "Continuer...";
-      _choiceB = ""; 
+      _choiceB = "";
     });
-    
+
     // Pour cet exemple, on navigue après un court délai pour que l'enfant puisse lire le résultat
     Future.delayed(const Duration(seconds: 4), () {
-        // Normalement, vous naviguez ici vers la page suivante de l'histoire ou le tableau de bord
-        // ignore: use_build_context_synchronously
-        Navigator.pop(context);
+      // Normalement, vous naviguez ici vers la page suivante de l'histoire ou le tableau de bord
+      // ignore: use_build_context_synchronously
+      Navigator.pop(context);
     });
   }
 
@@ -72,15 +74,20 @@ class _InteractiveStoryScreenLandscapeState extends State<InteractiveStoryScreen
   }) {
     // Bouton de décision, utilisant le style familier (blanc, bordure arrondie)
     return SizedBox(
-      width: 300, 
+      width: 300,
       height: 60,
       child: ElevatedButton(
-        onPressed: text == 'Continuer...' ? () => Navigator.pop(context) : onPressed, 
+        onPressed: text == 'Continuer...'
+            ? () => Navigator.pop(context)
+            : onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
-            side: BorderSide(color: color, width: 3), // Bordure colorée pour accent
+            side: BorderSide(
+              color: color,
+              width: 3,
+            ), // Bordure colorée pour accent
           ),
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         ),
@@ -110,8 +117,12 @@ class _InteractiveStoryScreenLandscapeState extends State<InteractiveStoryScreen
               Align(
                 alignment: Alignment.topLeft,
                 child: GestureDetector(
-                  onTap: () => Navigator.pop(context), 
-                  child: const Icon(Icons.exit_to_app, color: Colors.white, size: 40),
+                  onTap: () => Navigator.pop(context),
+                  child: const Icon(
+                    Icons.exit_to_app,
+                    color: Colors.white,
+                    size: 40,
+                  ),
                 ),
               ),
 
@@ -125,14 +136,19 @@ class _InteractiveStoryScreenLandscapeState extends State<InteractiveStoryScreen
                     Container(
                       width: MediaQuery.of(context).size.width * 0.3,
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1), // Placeholder visuel
+                        color: Colors.white.withOpacity(
+                          0.1,
+                        ), // Placeholder visuel
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: const Center(
-                        child: Text("Image de la Scène", style: TextStyle(color: Colors.white70)),
+                        child: Text(
+                          "Image de la Scène",
+                          style: TextStyle(color: Colors.white70),
+                        ),
                       ),
                     ),
-                    
+
                     const SizedBox(width: 20),
 
                     // Zone du texte de l'histoire (70% de l'écran)
@@ -140,7 +156,9 @@ class _InteractiveStoryScreenLandscapeState extends State<InteractiveStoryScreen
                       child: Container(
                         padding: const EdgeInsets.all(15),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.95), // Fond presque blanc pour le texte
+                          color: Colors.white.withOpacity(
+                            0.95,
+                          ), // Fond presque blanc pour le texte
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: SingleChildScrollView(
@@ -171,7 +189,7 @@ class _InteractiveStoryScreenLandscapeState extends State<InteractiveStoryScreen
                     _buildChoiceButton(
                       text: _choiceA,
                       onPressed: () => _handleChoice('A'),
-                      color: const Color(0xFFFCC0C0), 
+                      color: const Color(0xFFFCC0C0),
                     ),
 
                   // Choix B (Couleur verte/bleue, si différent de 'Continuer')
@@ -179,7 +197,7 @@ class _InteractiveStoryScreenLandscapeState extends State<InteractiveStoryScreen
                     _buildChoiceButton(
                       text: _choiceB,
                       onPressed: () => _handleChoice('B'),
-                      color: const Color(0xFF6A1B9A), 
+                      color: const Color(0xFF6A1B9A),
                     ),
                 ],
               ),

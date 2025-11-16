@@ -6,10 +6,12 @@ class GameSelectionScreenLandscape extends StatefulWidget {
   const GameSelectionScreenLandscape({super.key});
 
   @override
-  State<GameSelectionScreenLandscape> createState() => _GameSelectionScreenLandscapeState();
+  State<GameSelectionScreenLandscape> createState() =>
+      _GameSelectionScreenLandscapeState();
 }
 
-class _GameSelectionScreenLandscapeState extends State<GameSelectionScreenLandscape> {
+class _GameSelectionScreenLandscapeState
+    extends State<GameSelectionScreenLandscape> {
   @override
   void initState() {
     super.initState();
@@ -22,13 +24,10 @@ class _GameSelectionScreenLandscapeState extends State<GameSelectionScreenLandsc
 
   @override
   void dispose() {
-    // Réinitialise l'orientation par défaut (Portrait) lorsque l'écran est quitté
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
+    // Ne pas réinitialiser l'orientation pour rester en paysage après la fin du jeu
     super.dispose();
   }
-  
+
   // Widget utilitaire pour les cartes de jeu
   Widget _buildGameCard({
     required String label,
@@ -58,12 +57,16 @@ class _GameSelectionScreenLandscapeState extends State<GameSelectionScreenLandsc
             children: [
               // Contenu (Icône de verrouillage ou logo/icône du jeu)
               if (isLocked)
-                const Icon(Icons.lock_outline, size: 50, color: Color(0xFF6A1B9A))
+                const Icon(
+                  Icons.lock_outline,
+                  size: 50,
+                  color: Color(0xFF6A1B9A),
+                )
               else
                 iconOrImage, // Affiche l'icône ou l'image passée
-              
+
               const SizedBox(height: 10),
-              
+
               // Texte descriptif
               Text(
                 label,
@@ -87,8 +90,8 @@ class _GameSelectionScreenLandscapeState extends State<GameSelectionScreenLandsc
       backgroundColor: Colors.grey[200],
       body: Center(
         child: Container(
-          width: MediaQuery.of(context).size.width * 0.95, 
-          height: MediaQuery.of(context).size.height * 0.85, 
+          width: MediaQuery.of(context).size.width * 0.95,
+          height: MediaQuery.of(context).size.height * 0.85,
           padding: const EdgeInsets.all(20.0),
           decoration: BoxDecoration(
             color: const Color(0xFF6A1B9A), // Fond violet
@@ -111,20 +114,22 @@ class _GameSelectionScreenLandscapeState extends State<GameSelectionScreenLandsc
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.white, width: 2),
                         image: const DecorationImage(
-                            image: AssetImage('assets/images/placeholder_profile.png'), // Votre image de profil
-                            fit: BoxFit.cover
+                          image: AssetImage(
+                            'assets/images/placeholder_profile.png',
+                          ), // Votre image de profil
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
                   ),
-                  
+
                   const SizedBox(width: 20),
-                  
+
                   // 2. Titre "Jeux éducatifs"
                   const Padding(
                     padding: EdgeInsets.only(top: 15.0),
                     child: Text(
-                      'Jeux éducatifs', 
+                      'Jeux éducatifs',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -133,7 +138,7 @@ class _GameSelectionScreenLandscapeState extends State<GameSelectionScreenLandsc
                     ),
                   ),
 
-                  const Spacer(), 
+                  const Spacer(),
 
                   // 3. Bouton "Tout débloquer"
                   SizedBox(
@@ -142,7 +147,11 @@ class _GameSelectionScreenLandscapeState extends State<GameSelectionScreenLandsc
                     child: ElevatedButton(
                       onPressed: () {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Ouverture du magasin de déverrouillage des jeux...')),
+                          const SnackBar(
+                            content: Text(
+                              'Ouverture du magasin de déverrouillage des jeux...',
+                            ),
+                          ),
                         );
                       },
                       style: ElevatedButton.styleFrom(
@@ -164,9 +173,9 @@ class _GameSelectionScreenLandscapeState extends State<GameSelectionScreenLandsc
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 20),
-              
+
               // --- Ligne des Cartes de Jeux ---
               Expanded(
                 child: Row(
@@ -183,30 +192,43 @@ class _GameSelectionScreenLandscapeState extends State<GameSelectionScreenLandsc
                         // Navigation vers le jeu de tri des couleurs
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const ColorSortingGame()),
+                          MaterialPageRoute(
+                            builder: (context) => const ColorSortingGame(),
+                          ),
                         );
                       },
                     ),
-                    
+
                     // 2. Autre jeu (avec icône générique)
                     _buildGameCard(
                       label: 'Jeu des Formes',
-                      iconOrImage: const Icon(Icons.category, size: 50, color: Color(0xFF6A1B9A)),
-                      onTap: () {
-                      },
+                      iconOrImage: const Icon(
+                        Icons.category,
+                        size: 50,
+                        color: Color(0xFF6A1B9A),
+                      ),
+                      onTap: () {},
                     ),
-                    
+
                     // 3. Jeu verrouillé
                     _buildGameCard(
                       label: 'Jeu de Mémoire',
-                      iconOrImage: const Icon(Icons.memory, size: 50, color: Color(0xFF6A1B9A)),
+                      iconOrImage: const Icon(
+                        Icons.memory,
+                        size: 50,
+                        color: Color(0xFF6A1B9A),
+                      ),
                       isLocked: true,
                     ),
 
                     // 4. Autre jeu verrouillé
                     _buildGameCard(
                       label: 'Jeu de Calcul',
-                      iconOrImage: const Icon(Icons.calculate, size: 50, color: Color(0xFF6A1B9A)),
+                      iconOrImage: const Icon(
+                        Icons.calculate,
+                        size: 50,
+                        color: Color(0xFF6A1B9A),
+                      ),
                       isLocked: true,
                     ),
                   ],

@@ -10,8 +10,10 @@ class ProgresScreenLandscape extends StatefulWidget {
 
 class _ProgresScreenLandscapeState extends State<ProgresScreenLandscape> {
   // Définition de la couleur Aqua/Sarcelle de la maquette
-  static const Color aquaColor = Color(0xFF6DE8E4); 
-  static const Color darkAccentColor = Color(0xFF004D40); // Vert foncé pour le texte
+  static const Color aquaColor = Color(0xFF6DE8E4);
+  static const Color darkAccentColor = Color(
+    0xFF004D40,
+  ); // Vert foncé pour le texte
 
   // Données simulées de progression
   final double _progressPercentage = 0.75; // 75%
@@ -30,10 +32,7 @@ class _ProgresScreenLandscapeState extends State<ProgresScreenLandscape> {
 
   @override
   void dispose() {
-    // Réinitialise l'orientation par défaut
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
+    // Ne pas réinitialiser l'orientation pour rester en paysage après la fin du jeu
     super.dispose();
   }
 
@@ -41,7 +40,8 @@ class _ProgresScreenLandscapeState extends State<ProgresScreenLandscape> {
   Widget _buildCircularStatCard({
     required String label,
     required Color color,
-    required Widget contentWidget, // Widget dynamique pour le contenu (Progrès, Étoiles, Trophées)
+    required Widget
+    contentWidget, // Widget dynamique pour le contenu (Progrès, Étoiles, Trophées)
   }) {
     return Expanded(
       child: Column(
@@ -49,7 +49,7 @@ class _ProgresScreenLandscapeState extends State<ProgresScreenLandscape> {
         children: [
           // Le grand cercle blanc
           Container(
-            width: 150, 
+            width: 150,
             height: 150,
             decoration: BoxDecoration(
               color: Colors.white,
@@ -67,9 +67,9 @@ class _ProgresScreenLandscapeState extends State<ProgresScreenLandscape> {
               child: contentWidget, // Le contenu dynamique est placé ici
             ),
           ),
-          
+
           const SizedBox(height: 15),
-          
+
           // Le petit rectangle de texte sous le cercle
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -104,7 +104,9 @@ class _ProgresScreenLandscapeState extends State<ProgresScreenLandscape> {
             value: _progressPercentage, // 0.0 à 1.0
             strokeWidth: 15,
             backgroundColor: Colors.grey.shade300,
-            valueColor: const AlwaysStoppedAnimation<Color>(Colors.indigo), // Bleu marine
+            valueColor: const AlwaysStoppedAnimation<Color>(
+              Colors.indigo,
+            ), // Bleu marine
           ),
         ),
         Text(
@@ -155,7 +157,6 @@ class _ProgresScreenLandscapeState extends State<ProgresScreenLandscape> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -163,10 +164,10 @@ class _ProgresScreenLandscapeState extends State<ProgresScreenLandscape> {
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width * 0.95,
-          height: MediaQuery.of(context).size.height * 0.85, 
+          height: MediaQuery.of(context).size.height * 0.85,
           padding: const EdgeInsets.all(20.0),
           decoration: BoxDecoration(
-            color: aquaColor, 
+            color: aquaColor,
             borderRadius: BorderRadius.circular(25.0),
             gradient: LinearGradient(
               begin: Alignment.topCenter,
@@ -192,23 +193,23 @@ class _ProgresScreenLandscapeState extends State<ProgresScreenLandscape> {
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
-                        color: darkAccentColor, 
+                        color: darkAccentColor,
                       ),
                     ),
                   ),
                   GestureDetector(
                     onTap: () => Navigator.pop(context),
                     child: const Icon(
-                      Icons.close, 
-                      color: darkAccentColor, 
+                      Icons.close,
+                      color: darkAccentColor,
                       size: 35,
                     ),
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 40),
-              
+
               // --- Ligne des Statistiques Circulaires ---
               Expanded(
                 child: Row(
@@ -220,14 +221,14 @@ class _ProgresScreenLandscapeState extends State<ProgresScreenLandscape> {
                       color: Colors.indigo,
                       contentWidget: _buildProgressContent(),
                     ),
-                    
+
                     // 2. Étoiles (Nombre total)
                     _buildCircularStatCard(
                       label: 'Étoiles',
                       color: Colors.orange.shade800,
                       contentWidget: _buildStarsContent(),
                     ),
-                    
+
                     // 3. Trophées (Nombre total)
                     _buildCircularStatCard(
                       label: 'Trophées',
