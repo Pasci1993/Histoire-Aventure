@@ -9,7 +9,7 @@ class StorySelectionScreen extends StatefulWidget {
   State<StorySelectionScreen> createState() => _StorySelectionScreenState();
 }
 
-class   _StorySelectionScreenState extends State<StorySelectionScreen> {
+class _StorySelectionScreenState extends State<StorySelectionScreen> {
   @override
   void initState() {
     super.initState();
@@ -117,9 +117,7 @@ class   _StorySelectionScreenState extends State<StorySelectionScreen> {
                       border: Border.all(color: Colors.white, width: 2),
                       // Remplacer par l'image de profil réelle
                       image: const DecorationImage(
-                        image: AssetImage(
-                          'assets/images/placeholder_profile.png',
-                        ),
+                        image: AssetImage('assets/images/logo3.png'),
                         fit: BoxFit.cover,
                       ),
                     ),

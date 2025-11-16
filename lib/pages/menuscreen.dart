@@ -142,9 +142,7 @@ class MenuScreen extends StatelessWidget {
         'color': Colors.greenAccent,
         'action': () => Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => const GameSelectionScreenLandscape(),
-          ),
+          MaterialPageRoute(builder: (context) => const GameSelectionScreen()),
         ),
       },
       {

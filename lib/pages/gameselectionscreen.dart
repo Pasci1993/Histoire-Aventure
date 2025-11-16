@@ -2,16 +2,14 @@ import 'package:appli_histoire_aventure/pages/colorsortinggame.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class GameSelectionScreenLandscape extends StatefulWidget {
-  const GameSelectionScreenLandscape({super.key});
+class GameSelectionScreen extends StatefulWidget {
+  const GameSelectionScreen({super.key});
 
   @override
-  State<GameSelectionScreenLandscape> createState() =>
-      _GameSelectionScreenLandscapeState();
+  State<GameSelectionScreen> createState() => _GameSelectionScreenState();
 }
 
-class _GameSelectionScreenLandscapeState
-    extends State<GameSelectionScreenLandscape> {
+class _GameSelectionScreenState extends State<GameSelectionScreen> {
   @override
   void initState() {
     super.initState();
@@ -20,6 +18,7 @@ class _GameSelectionScreenLandscapeState
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
+    debugPrint('GameSelectionScreen: initState completed');
   }
 
   @override
@@ -86,7 +85,8 @@ class _GameSelectionScreenLandscapeState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    debugPrint('GameSelectionScreen: build start');
+    final scaffold = Scaffold(
       backgroundColor: Colors.grey[200],
       body: Center(
         child: Container(
@@ -115,8 +115,8 @@ class _GameSelectionScreenLandscapeState
                         border: Border.all(color: Colors.white, width: 2),
                         image: const DecorationImage(
                           image: AssetImage(
-                            'assets/images/placeholder_profile.png',
-                          ), // Votre image de profil
+                            'assets/images/logo3.png',
+                          ), // Votre image de profil (using logo3)
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -239,5 +239,7 @@ class _GameSelectionScreenLandscapeState
         ),
       ),
     );
+    debugPrint('GameSelectionScreen: build completed');
+    return scaffold;
   }
 }
