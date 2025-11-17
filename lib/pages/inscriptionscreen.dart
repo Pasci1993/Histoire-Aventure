@@ -50,10 +50,6 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
 
       final uid = userCredential.user!.uid;
 
-      // Try to write the profile to Firestore. If this fails (for example
-      // due to security rules / permission-denied), catch the error so the
-      // app doesn't crash. We still navigate to MenuScreen but inform the
-      // user that the profile could not be saved.
       try {
         await FirebaseFirestore.instance.collection('users').doc(uid).set({
           'uid': uid,

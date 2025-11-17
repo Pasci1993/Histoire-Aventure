@@ -1,8 +1,9 @@
+import 'package:appli_histoire_aventure/pages/parametrespage.dart';
+import 'package:appli_histoire_aventure/pages/progressionscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:appli_histoire_aventure/pages/ageselectionscreen.dart';
 import 'package:appli_histoire_aventure/pages/storyselectionscreen.dart';
 import 'package:appli_histoire_aventure/pages/gameselectionscreen.dart';
-import 'package:appli_histoire_aventure/pages/progresscreen.dart';
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({super.key});
@@ -48,9 +49,29 @@ class MenuScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  // Avatar
-                  _buildUserAvatar(),
-
+                 GestureDetector(
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ParametresModalLandscape(),
+      ),
+    );
+  },
+  child: Container(
+    width: 60,
+    height: 60,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      shape: BoxShape.circle,
+      border: Border.all(color: Colors.white, width: 2),
+      image: const DecorationImage(
+        image: AssetImage('assets/images/logo3.png'),
+        fit: BoxFit.cover,
+      ),
+    ),
+  ),
+),
                   // Bouton "Tout débloquer"
                   _buildUnlockButton(),
                 ],
@@ -69,25 +90,6 @@ class MenuScreen extends StatelessWidget {
 
   // --- Widgets de construction ---
 
-  Widget _buildUserAvatar() {
-    // Simule l'avatar avec une bordure stylisée
-    return Container(
-      width: 60,
-      height: 60,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        // Bordure stylisée (Orange, Bleu, etc.)
-        border: Border.all(color: Colors.orange, width: 3.0),
-        image: const DecorationImage(
-          // Remplacez 'assets/avatar.png' par l'image de votre choix
-          image: NetworkImage(
-            'https://via.placeholder.com/60/FFD700/000000?text=👶',
-          ),
-          fit: BoxFit.cover,
-        ),
-      ),
-    );
-  }
 
   Widget _buildUnlockButton() {
     return ElevatedButton(
@@ -152,7 +154,7 @@ class MenuScreen extends StatelessWidget {
         'action': () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const ProgresScreenLandscape(),
+            builder: (context) => const ProgressionScreenPortrait(),
           ),
         ),
       },

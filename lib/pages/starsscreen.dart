@@ -42,13 +42,13 @@ class _StarsScreenLandscapeState extends State<StarsScreenLandscape> {
     CompletedActivity(title: 'Histoire : La Montagne', quality: StarQuality.silver, date: '15/11/25'),
   ];
 
-  @override
+   @override
   void initState() {
     super.initState();
-    // Force le mode Paysage
+    // Force le mode portrait dès l'entrée
     SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
     ]);
   }
 

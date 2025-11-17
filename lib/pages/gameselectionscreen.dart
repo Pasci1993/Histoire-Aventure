@@ -1,4 +1,5 @@
 import 'package:appli_histoire_aventure/pages/colorsortinggame.dart';
+import 'package:appli_histoire_aventure/pages/parametrespage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -105,23 +106,29 @@ class _GameSelectionScreenState extends State<GameSelectionScreen> {
                 children: <Widget>[
                   // 1. Bouton/Image de Profil (retour à l'écran précédent)
                   GestureDetector(
-                    onTap: () => Navigator.pop(context), // Retour au Dashboard
-                    child: Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 2),
-                        image: const DecorationImage(
-                          image: AssetImage(
-                            'assets/images/logo3.png',
-                          ), // Votre image de profil (using logo3)
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ParametresModalLandscape(),
+      ),
+    );
+  },
+  child: Container(
+    width: 60,
+    height: 60,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      shape: BoxShape.circle,
+      border: Border.all(color: Colors.white, width: 2),
+      image: const DecorationImage(
+        image: AssetImage('assets/images/logo3.png'),
+        fit: BoxFit.cover,
+      ),
+    ),
+  ),
+),
+
 
                   const SizedBox(width: 20),
 

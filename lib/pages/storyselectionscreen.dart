@@ -1,3 +1,4 @@
+import 'package:appli_histoire_aventure/pages/parametrespage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:appli_histoire_aventure/pages/interactivestoryscreen.dart';
@@ -108,22 +109,29 @@ class _StorySelectionScreenState extends State<StorySelectionScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   // 1. Bouton/Image de Profil
-                  Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 2),
-                      // Remplacer par l'image de profil réelle
-                      image: const DecorationImage(
-                        image: AssetImage('assets/images/logo3.png'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    // Si vous voulez l'icône de la maquette:
-                    // child: Image.asset('assets/images/avatar.png', width: 60),
-                  ),
+                  GestureDetector(
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ParametresModalLandscape(),
+      ),
+    );
+  },
+  child: Container(
+    width: 60,
+    height: 60,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      shape: BoxShape.circle,
+      border: Border.all(color: Colors.white, width: 2),
+      image: const DecorationImage(
+        image: AssetImage('assets/images/logo3.png'),
+        fit: BoxFit.cover,
+      ),
+    ),
+  ),
+),
 
                   const SizedBox(width: 20),
 

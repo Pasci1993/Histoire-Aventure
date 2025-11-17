@@ -38,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       final email = "$pseudo@histoire-aventure.com"; // email fictif
-      UserCredential userCredential = await FirebaseAuth.instance
+      await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
 
       if (context.mounted) {

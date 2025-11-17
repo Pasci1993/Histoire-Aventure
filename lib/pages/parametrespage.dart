@@ -83,7 +83,7 @@ class ParametresModalLandscape extends StatelessWidget {
             children: [
               // Profil Enfant Actuel
               _buildProfileItem(
-                label: 'Enfant A',
+                label: 'Profil',
                 isCurrent: true,
                 onTap: () {}, // Peut être utilisé pour changer de profil
               ),

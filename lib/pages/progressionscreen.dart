@@ -1,86 +1,119 @@
+import 'package:appli_histoire_aventure/pages/progresscreen.dart';
+import 'package:appli_histoire_aventure/pages/starsscreen.dart';
+import 'package:appli_histoire_aventure/pages/trophycollectionscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class ProgressionScreenLandscape extends StatefulWidget {
-  const ProgressionScreenLandscape({super.key});
+// Écrans de destination simulés
+class ProgresDetailScreen extends StatelessWidget {
+  const ProgresDetailScreen({super.key});
 
   @override
-  State<ProgressionScreenLandscape> createState() => _ProgressionScreenLandscapeState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Détail Progrès')),
+      body: const Center(child: Text('Ici le détail du progrès')),
+    );
+  }
 }
 
-class _ProgressionScreenLandscapeState extends State<ProgressionScreenLandscape> {
-  // Définition de la couleur Aqua/Sarcelle de la maquette
-  static const Color aquaColor = Color(0xFF6DE8E4); // Couleur similaire au fond de la maquette 
+class StarsDetailScreen extends StatelessWidget {
+  const StarsDetailScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Détail Étoiles')),
+      body: const Center(child: Text('Ici le détail des étoiles')),
+    );
+  }
+}
+
+class TrophiesDetailScreen extends StatelessWidget {
+  const TrophiesDetailScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Détail Trophées')),
+      body: const Center(child: Text('Ici le détail des trophées')),
+    );
+  }
+}
+
+// Écran principal de progression en portrait
+class ProgressionScreenPortrait extends StatefulWidget {
+  const ProgressionScreenPortrait({super.key});
+
+  @override
+  State<ProgressionScreenPortrait> createState() =>
+      _ProgressionScreenPortraitState();
+}
+
+class _ProgressionScreenPortraitState
+    extends State<ProgressionScreenPortrait> {
+  static const Color aquaColor = Color(0xFF6DE8E4);
+
   @override
   void initState() {
     super.initState();
-    // Force le mode Paysage au démarrage
+    // Force le mode portrait dès l'entrée
     SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
     ]);
   }
 
   @override
   void dispose() {
-    // Réinitialise l'orientation par défaut (Portrait) lorsque l'écran est quitté
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
+    // Réinitialise l'orientation par défaut à la sortie
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     super.dispose();
   }
 
-  // Widget utilitaire pour les cartes circulaires (Progrès, Étoiles, Trophées)
-  Widget _buildCircularStatCard({
+  // Carte cliquable pour chaque statistique
+  Widget _buildStatCard({
     required String label,
     required IconData icon,
+    required Color color,
     VoidCallback? onTap,
-    required Color color, // Couleur d'accentuation
   }) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: onTap,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Le grand cercle blanc
-            Container(
-              width: 150, // Taille du cercle
-              height: 150,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                border: Border.all(color: color.withOpacity(0.5), width: 5),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    blurRadius: 10,
-                    offset: const Offset(0, 5),
-                  ),
-                ],
-              ),
-              child: Center(
-                // Placeholder pour le contenu du cercle (icône)
-                child: Icon(icon, size: 70, color: color),
-              ),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: color.withOpacity(0.6), width: 2),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.15),
+              blurRadius: 6,
+              offset: const Offset(0, 3),
             ),
-            
-            const SizedBox(height: 15),
-            
-            // Le petit rectangle de texte sous le cercle
+          ],
+        ),
+        child: Row(
+          children: [
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              width: 60,
+              height: 60,
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: color, width: 2),
+                color: color.withOpacity(0.2),
+                shape: BoxShape.circle,
               ),
+              child: Icon(icon, color: color, size: 36),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
               child: Text(
                 label,
-                style: TextStyle(
-                  color: color,
-                  fontWeight: FontWeight.bold,
+                style: const TextStyle(
                   fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
                 ),
               ),
             ),
@@ -92,17 +125,27 @@ class _ProgressionScreenLandscapeState extends State<ProgressionScreenLandscape>
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      backgroundColor: Colors.grey[200], // Fond derrière la carte
-      body: Center(
+      backgroundColor: Colors.grey[200],
+      appBar: AppBar(
+        title: const Text(
+          'Progression',
+          style: TextStyle(color: Colors.black, fontSize: 24),
+        ),
+        backgroundColor: Colors.grey[200],
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Container(
-          width: MediaQuery.of(context).size.width * 0.95, // Presque toute la largeur
-          height: MediaQuery.of(context).size.height * 0.85, // Presque toute la hauteur
-          padding: const EdgeInsets.all(20.0),
+          width: screenWidth,
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: aquaColor, // Fond Bleu Aqua/Sarcelle
-            borderRadius: BorderRadius.circular(25.0),
-            // Un dégradé léger pour ressembler à la maquette
+            color: aquaColor,
+            borderRadius: BorderRadius.circular(20),
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -113,73 +156,46 @@ class _ProgressionScreenLandscapeState extends State<ProgressionScreenLandscape>
               ],
             ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              // --- En-tête (Titre et Bouton Fermer) ---
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Titre
-                  const Padding(
-                    padding: EdgeInsets.only(top: 5.0, left: 10.0),
-                    child: Text(
-                      'Progression',
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF004D40), // Vert foncé pour contraste
-                      ),
+          child: ListView(
+            children: [
+              _buildStatCard(
+                label: 'Progrès',
+                icon: Icons.track_changes,
+                color: const Color(0xFF1A237E),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ProgresScreenPortrait(),
                     ),
-                  ),
-                  
-                  // Bouton Fermer (X)
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: const Icon(
-                      Icons.close, 
-                      color: Color(0xFF004D40), // Vert foncé
-                      size: 35,
-                    ),
-                  ),
-                ],
+                  );
+                },
               ),
-              
-              const SizedBox(height: 40),
-              
-              // --- Ligne des Statistiques Circulaires ---
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    // 1. Progrès (Icône de ligne/cible)
-                    _buildCircularStatCard(
-                      label: 'Progrès',
-                      icon: Icons.track_changes,
-                      color: const Color(0xFF1A237E), // Bleu marine
-                      onTap: () {
-                      },
+              _buildStatCard(
+                label: 'Étoiles',
+                icon: Icons.star_rate_rounded,
+                color: Colors.orange.shade800,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const StarsScreenLandscape(),
                     ),
-                    
-                    // 2. Étoiles (Icône d'étoile)
-                    _buildCircularStatCard(
-                      label: 'Étoiles',
-                      icon: Icons.star_rate_rounded,
-                      color: Colors.orange.shade800, // Orange vif
-                      onTap: () {
-                      },
+                  );
+                },
+              ),
+              _buildStatCard(
+                label: 'Trophées',
+                icon: Icons.emoji_events,
+                color: const Color(0xFF6A1B9A),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const TrophyCollectionScreenLandscape(),
                     ),
-                    
-                    // 3. Trophées (Icône de coupe)
-                    _buildCircularStatCard(
-                      label: 'Trophées',
-                      icon: Icons.emoji_events,
-                      color: const Color(0xFF6A1B9A), // Couleur violette classique
-                      onTap: () {
-                      },
-                    ),
-                  ],
-                ),
+                  );
+                },
               ),
             ],
           ),
