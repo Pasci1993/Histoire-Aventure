@@ -18,12 +18,12 @@ class _GameSelectionScreenState extends State<GameSelectionScreen> {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
-    debugPrint('GameSelectionScreen: initState completed');
   }
 
   @override
   void dispose() {
-    // Ne pas réinitialiser l'orientation pour rester en paysage après la fin du jeu
+    // Réinitialise l'orientation par défaut (Portrait) lorsque l'écran est quitté
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     super.dispose();
   }
 
@@ -183,11 +183,11 @@ class _GameSelectionScreenState extends State<GameSelectionScreen> {
                     // 1. Jeu de Tri des Couleurs (ou "Sélectionner un jeu")
                     _buildGameCard(
                       label: 'Jeu de Tri des Couleurs',
-                      iconOrImage: Image.asset(
-                        'assets/images/color_sorting_logo.png', // Chemin vers le logo de votre jeu
-                        height: 50, // Ajustez la taille du logo
-                        width: 50,
-                      ),
+                      iconOrImage: const Icon(
+  Icons.color_lens,   // Icône adaptée à un jeu basé sur les couleurs
+  size: 50,
+  color: Colors.deepPurple,
+),
                       onTap: () {
                         // Navigation vers le jeu de tri des couleurs
                         Navigator.push(
@@ -207,7 +207,7 @@ class _GameSelectionScreenState extends State<GameSelectionScreen> {
                         size: 50,
                         color: Color(0xFF6A1B9A),
                       ),
-                      onTap: () {},
+                      isLocked: true,
                     ),
 
                     // 3. Jeu verrouillé

@@ -43,28 +43,62 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
     setState(() => loading = true);
 
     try {
+      debugPrint('Inscription: tentative pour pseudo="$pseudo"');
       final email = "$pseudo@histoire-aventure.com"; // email fictif
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
 
       final uid = userCredential.user!.uid;
 
-      await FirebaseFirestore.instance.collection('users').doc(uid).set({
-        'uid': uid,
-        'pseudo': pseudo,
-        'age_number': widget.ageNumber ?? '',
-        'age_word': widget.ageWord ?? '',
-        'created_at': Timestamp.now(),
-      });
+      // Try to write the profile to Firestore. If this fails (for example
+      // due to security rules / permission-denied), catch the error so the
+      // app doesn't crash. We still navigate to MenuScreen but inform the
+      // user that the profile could not be saved.
+      try {
+        await FirebaseFirestore.instance.collection('users').doc(uid).set({
+          'uid': uid,
+          'pseudo': pseudo,
+          'age_number': widget.ageNumber ?? '',
+          'age_word': widget.ageWord ?? '',
+          'created_at': Timestamp.now(),
+        });
 
+        debugPrint('Profil Firestore créé pour uid=$uid');
+      } catch (e) {
+        debugPrint('Erreur lors de l\'écriture Firestore pour uid=$uid : $e');
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Inscription OK, mais profil non sauvegardé (permissions Firestore).',
+              ),
+            ),
+          );
+        }
+      }
+
+      // Show a short confirmation to the user (if not already shown by the
+      // Firestore error branch).
       if (context.mounted) {
-        Navigator.of(context).pushReplacement(
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Inscription réussie !')));
+
+        // Replace the whole navigation stack so MenuScreen becomes the app root
+        Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const MenuScreen()),
+          (route) => false,
         );
       }
     } on FirebaseAuthException catch (e) {
       String message = e.message ?? 'Erreur inconnue';
+      debugPrint('FirebaseAuthException during signup: $message');
       setState(() => _errorMessage = message);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur d\'inscription: $message')),
+        );
+      }
     } finally {
       setState(() => loading = false);
     }
@@ -96,9 +130,10 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                   'Bienvenue ! Saisis les informations pour t\'inscrire.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
                 SizedBox(height: screenHeight * 0.03),
                 if (widget.ageNumber != null && widget.ageWord != null)
@@ -109,17 +144,22 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                 SizedBox(height: screenHeight * 0.03),
                 _buildTextField('Pseudo', Icons.person, pseudoController),
                 SizedBox(height: screenHeight * 0.03),
-                _buildTextField('Mot de passe', Icons.lock, passwordController,
-                    isPassword: true),
+                _buildTextField(
+                  'Mot de passe',
+                  Icons.lock,
+                  passwordController,
+                  isPassword: true,
+                ),
                 SizedBox(height: screenHeight * 0.03),
                 if (_errorMessage.isNotEmpty)
                   Text(
                     _errorMessage,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                        color: Colors.redAccent,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
+                      color: Colors.redAccent,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
                   ),
                 SizedBox(height: screenHeight * 0.03),
                 loading
@@ -137,8 +177,11 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
   }
 
   Widget _buildTextField(
-      String label, IconData icon, TextEditingController controller,
-      {bool isPassword = false}) {
+    String label,
+    IconData icon,
+    TextEditingController controller, {
+    bool isPassword = false,
+  }) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
